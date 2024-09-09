@@ -1,0 +1,34 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Стресс-тестирование</h1>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <form action="/start-test" method="post">
+        <label for="users">Количество пользователей:</label>
+        <input type="number" id="users" name="users" required><br>
+
+        <label for="transactions_per_second">Транзакций в секунду:</label>
+        <input type="number" id="transactions_per_second" name="transactions_per_second" required><br>
+
+        <button type="submit" {% if test_running %}disabled{% endif %}>Начать тест</button>
+    </form>
+
+    {% if test_running %}
+        <form action="/stop-test" method="post">
+            <button type="submit">Остановить тест</button>
+        </form>
+    {% endif %}
+
+    <a href="/analytics">Перейти на страницу аналитики</a>
+</body>
+</html>

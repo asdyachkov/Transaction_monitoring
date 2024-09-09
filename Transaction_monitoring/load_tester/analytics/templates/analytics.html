@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Test Analytics</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Аналитика</h1>
+
+    <!-- Динамическая статистика -->
+    <div id="analytics-data">
+        <!-- Здесь будет отображаться динамическая статистика -->
+    </div>
+
+    {% if test_running %}
+        <form action="/stop-test" method="get">
+            <button type="submit">Остановить тест</button>
+        </form>
+    {% endif %}
+
+    <a href="/">На главную</a>
+
+    <script>
+        function fetchAnalyticsData() {
+            $.getJSON("/analytics/data", function(data) {
+                $("#analytics-data").html(`
+                    <p>Average Response Time: ${data.average_response_time} ms</p>
+                    <p>Total Requests: ${data.total_requests}</p>
+                    <p>Successful Requests: ${data.successful_requests} (${data.success_rate})</p>
+                    <p>Failed Requests: ${data.failed_requests} (${data.failure_rate})</p>
+                `);
+            });
+        }
+
+        $(document).ready(function() {
+            // Обновляем данные каждые 1 секунды
+            setInterval(fetchAnalyticsData, 1000);
+        });
+    </script>
+</body>
+</html>

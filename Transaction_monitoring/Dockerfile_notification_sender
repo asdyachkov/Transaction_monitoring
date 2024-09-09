@@ -1,0 +1,21 @@
+# Dockerfile_kafka_consumer for a microservice
+FROM python:3.9-slim
+
+# Установка рабочей директории
+WORKDIR /app
+
+# Копирование файла зависимостей
+COPY notification_sender/requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Копирование всего кода проекта в контейнер
+COPY . .
+
+# Настройка переменной среды для Django
+ENV PYTHONPATH=/app
+
+# Установка переменной окружения Django
+ENV DJANGO_SETTINGS_MODULE=Transaction_monitoring.settings
+
+# Команда для запуска микросервиса
+CMD ["python", "notification_sender/notification_sender.py"]
